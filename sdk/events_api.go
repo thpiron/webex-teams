@@ -1,9 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
-
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -95,9 +92,7 @@ Specify the event ID in the eventId parameter in the URI.
 */
 func (s *EventsService) GetEvent(eventID string) (*Event, *resty.Response, error) {
 
-	path := "/events/{eventId}"
-	path = strings.Replace(path, "{"+"eventId"+"}", fmt.Sprintf("%v", eventID), -1)
-
+	path := "/events/" + eventID
 	response, err := s.client.R().
 		SetResult(&Event{}).
 		SetError(&Error{}).

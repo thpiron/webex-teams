@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -155,8 +153,7 @@ func (s *MeetingsService) CreateMeeting(meetingCreateRequest *MeetingCreateReque
 */
 func (s *MeetingsService) DeleteMeeting(meetingID string) (*resty.Response, error) {
 
-	path := "/meetings/{meetingId}"
-	path = strings.Replace(path, "{"+"meetingId"+"}", fmt.Sprintf("%v", meetingID), -1)
+	path := "/meetings/" + meetingID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -179,8 +176,7 @@ Specify the meeting ID in the meetingID parameter in the URI.
 */
 func (s *MeetingsService) GetMeeting(meetingID string) (*Meeting, *resty.Response, error) {
 
-	path := "/meetings/{meetingId}"
-	path = strings.Replace(path, "{"+"meetingId"+"}", fmt.Sprintf("%v", meetingID), -1)
+	path := "/meetings/" + meetingID
 
 	response, err := s.client.R().
 		SetResult(&Meeting{}).

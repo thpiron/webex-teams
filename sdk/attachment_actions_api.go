@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -62,8 +60,7 @@ Specify the attachment action ID in the attachmentActionID parameter in the URI.
 */
 func (s *AttachmentActionsService) GetAttachmentAction(attachmentActionID string) (*AttachmentAction, *resty.Response, error) {
 
-	path := "/attachment/actions/{attachmentActionID}"
-	path = strings.Replace(path, "{"+"attachmentActionID"+"}", fmt.Sprintf("%v", attachmentActionID), -1)
+	path := "/attachment/actions/" + attachmentActionID
 
 	response, err := s.client.R().
 		SetResult(&AttachmentAction{}).

@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -177,8 +175,7 @@ func (s *RecordingsService) ListRecordings(queryParams *ListRecordingsQueryParam
 */
 func (s *RecordingsService) GetRecording(recordingID string) (*RecordingDetails, *resty.Response, error) {
 
-	path := "/recordings/{recordingId}"
-	path = strings.Replace(path, "{"+"recordingId"+"}", fmt.Sprintf("%v", recordingID), -1)
+	path := "/recordings/" + recordingID
 
 	response, err := s.client.R().
 		SetResult(&RecordingDetails{}).
@@ -204,8 +201,7 @@ Only recordings of meetings hosted by the authenticated user can be deleted.
 */
 func (s *RecordingsService) DeleteRecording(recordingID string) (*resty.Response, error) {
 
-	path := "/recordings/{recordingId}"
-	path = strings.Replace(path, "{"+"recordingId"+"}", fmt.Sprintf("%v", recordingID), -1)
+	path := "/recordings/" + recordingID
 
 	response, err := s.client.R().
 		SetError(&Error{}).

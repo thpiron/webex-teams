@@ -2,9 +2,7 @@ package webexteams
 
 import (
 	"errors"
-	"fmt"
 	"io"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -198,8 +196,7 @@ The files parameter is an array, which accepts multiple values to allow for futu
 */
 func (s *MessagesService) EditMessage(messageID string, messageEditRequest *MessageEditRequest) (*Message, *resty.Response, error) {
 
-	path := "/messages/{messageId}"
-	path = strings.Replace(path, "{"+"messageId"+"}", fmt.Sprintf("%v", messageID), -1)
+	path := "/messages/" + messageID
 
 	response, err := s.client.R().
 		SetBody(messageEditRequest).
@@ -223,8 +220,7 @@ func (s *MessagesService) EditMessage(messageID string, messageEditRequest *Mess
 */
 func (s *MessagesService) DeleteMessage(messageID string) (*resty.Response, error) {
 
-	path := "/messages/{messageId}"
-	path = strings.Replace(path, "{"+"messageId"+"}", fmt.Sprintf("%v", messageID), -1)
+	path := "/messages/" + messageID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -247,8 +243,7 @@ Specify the message ID in the messageID parameter in the URI.
 */
 func (s *MessagesService) GetMessage(messageID string) (*Message, *resty.Response, error) {
 
-	path := "/messages/{messageId}"
-	path = strings.Replace(path, "{"+"messageId"+"}", fmt.Sprintf("%v", messageID), -1)
+	path := "/messages/" + messageID
 
 	response, err := s.client.R().
 		SetResult(&Message{}).

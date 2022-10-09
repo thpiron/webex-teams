@@ -1,9 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
-
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -123,8 +120,7 @@ Specify the membership ID in the membershipID URI parameter.
 */
 func (s *MembershipsService) DeleteMembership(membershipID string) (*resty.Response, error) {
 
-	path := "/memberships/{membershipId}"
-	path = strings.Replace(path, "{"+"membershipId"+"}", fmt.Sprintf("%v", membershipID), -1)
+	path := "/memberships/" + membershipID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -147,8 +143,7 @@ Specify the membership ID in the membershipID URI parameter.
 */
 func (s *MembershipsService) GetMembership(membershipID string) (*Membership, *resty.Response, error) {
 
-	path := "/memberships/{membershipId}"
-	path = strings.Replace(path, "{"+"membershipId"+"}", fmt.Sprintf("%v", membershipID), -1)
+	path := "/memberships/" + membershipID
 
 	response, err := s.client.R().
 		SetResult(&Membership{}).
@@ -232,8 +227,7 @@ Specify the membership ID in the membershipID URI parameter.
 */
 func (s *MembershipsService) UpdateMembership(membershipID string, membershipUpdateRequest *MembershipUpdateRequest) (*Membership, *resty.Response, error) {
 
-	path := "/memberships/{membershipId}"
-	path = strings.Replace(path, "{"+"membershipId"+"}", fmt.Sprintf("%v", membershipID), -1)
+	path := "/memberships/" + membershipID
 
 	response, err := s.client.R().
 		SetBody(membershipUpdateRequest).

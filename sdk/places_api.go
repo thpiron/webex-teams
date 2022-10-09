@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -119,8 +117,7 @@ Specify the place ID in the placeID parameter in the URI
 */
 func (s *PlacesService) DeletePlace(placeID string) (*resty.Response, error) {
 
-	path := "/places/{placeId}"
-	path = strings.Replace(path, "{"+"placeId"+"}", fmt.Sprintf("%v", placeID), -1)
+	path := "/places/" + placeID
 
 	response, err := s.client.R().
 		Delete(path)
@@ -143,8 +140,7 @@ Specify the place ID in the placeID parameter in the URI.
 */
 func (s *PlacesService) GetPlace(placeID string) (*Place, *resty.Response, error) {
 
-	path := "/places/{placeId}"
-	path = strings.Replace(path, "{"+"placeId"+"}", fmt.Sprintf("%v", placeID), -1)
+	path := "/places/" + placeID
 
 	response, err := s.client.R().
 		SetResult(&Place{}).
@@ -226,8 +222,7 @@ Specify the place ID in the placeID parameter in the URI.
 */
 func (s *PlacesService) UpdatePlace(placeID string, placeUpdateRequest *PlaceUpdateRequest) (*Place, *resty.Response, error) {
 
-	path := "/places/{placeId}"
-	path = strings.Replace(path, "{"+"placeId"+"}", fmt.Sprintf("%v", placeID), -1)
+	path := "/places/" + placeID
 
 	response, err := s.client.R().
 		SetBody(placeUpdateRequest).

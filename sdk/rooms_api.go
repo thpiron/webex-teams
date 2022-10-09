@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -126,8 +124,7 @@ Specify the room ID in the roomID parameter in the URI
 */
 func (s *RoomsService) DeleteRoom(roomID string) (*resty.Response, error) {
 
-	path := "/rooms/{roomId}"
-	path = strings.Replace(path, "{"+"roomId"+"}", fmt.Sprintf("%v", roomID), -1)
+	path := "/rooms/" + roomID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -151,8 +148,7 @@ Specify the room ID in the roomID parameter in the URI.
 */
 func (s *RoomsService) GetRoom(roomID string) (*Room, *resty.Response, error) {
 
-	path := "/rooms/{roomId}"
-	path = strings.Replace(path, "{"+"roomId"+"}", fmt.Sprintf("%v", roomID), -1)
+	path := "/rooms/" + roomID
 
 	response, err := s.client.R().
 		SetResult(&Room{}).
@@ -235,8 +231,7 @@ Specify the room ID in the roomID parameter in the URI.
 */
 func (s *RoomsService) UpdateRoom(roomID string, roomUpdateRequest *RoomUpdateRequest) (*Room, *resty.Response, error) {
 
-	path := "/rooms/{roomId}"
-	path = strings.Replace(path, "{"+"roomId"+"}", fmt.Sprintf("%v", roomID), -1)
+	path := "/rooms/" + roomID
 
 	response, err := s.client.R().
 		SetBody(roomUpdateRequest).

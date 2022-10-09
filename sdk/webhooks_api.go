@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -153,8 +151,7 @@ Specify the webhook ID in the webhookID parameter in the URI.
 */
 func (s *WebhooksService) DeleteWebhook(webhookID string) (*resty.Response, error) {
 
-	path := "/webhooks/{webhookId}"
-	path = strings.Replace(path, "{"+"webhookId"+"}", fmt.Sprintf("%v", webhookID), -1)
+	path := "/webhooks/" + webhookID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -177,8 +174,7 @@ Specify the webhook ID in the webhookID parameter in the URI.
 */
 func (s *WebhooksService) GetWebhook(webhookID string) (*Webhook, *resty.Response, error) {
 
-	path := "/webhooks/{webhookId}"
-	path = strings.Replace(path, "{"+"webhookId"+"}", fmt.Sprintf("%v", webhookID), -1)
+	path := "/webhooks/" + webhookID
 
 	response, err := s.client.R().
 		SetResult(&Webhook{}).
@@ -251,8 +247,7 @@ Specify the webhook ID in the webhookID parameter in the URI.
 */
 func (s *WebhooksService) UpdateWebhook(webhookID string, webhookUpdateRequest *WebhookUpdateRequest) (*Webhook, *resty.Response, error) {
 
-	path := "/webhooks/{webhookId}"
-	path = strings.Replace(path, "{"+"webhookId"+"}", fmt.Sprintf("%v", webhookID), -1)
+	path := "/webhooks/" + webhookID
 
 	response, err := s.client.R().
 		SetBody(webhookUpdateRequest).

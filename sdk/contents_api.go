@@ -1,9 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/go-resty/resty/v2"
 )
 
@@ -17,8 +14,7 @@ type ContentsService service
 */
 func (s *ContentsService) GetContent(contentID string) (*resty.Response, error) {
 
-	path := "/contents/{contentId}"
-	path = strings.Replace(path, "{"+"contentId"+"}", fmt.Sprintf("%v", contentID), -1)
+	path := "/contents/" + contentID
 
 	response, err := s.client.R().
 		SetError(&Error{}).

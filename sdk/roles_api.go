@@ -1,9 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/go-resty/resty/v2"
 	"github.com/google/go-querystring/query"
 	"github.com/peterhellberg/link"
@@ -74,8 +71,7 @@ Specify the role ID in the roleID parameter in the URI.
 */
 func (s *RolesService) GetRole(roleID string) (*Role, *resty.Response, error) {
 
-	path := "/roles/{roleId}"
-	path = strings.Replace(path, "{"+"roleId"+"}", fmt.Sprintf("%v", roleID), -1)
+	path := "/roles/" + roleID
 
 	response, err := s.client.R().
 		SetResult(&Role{}).

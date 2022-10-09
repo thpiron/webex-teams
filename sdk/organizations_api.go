@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -76,8 +74,7 @@ Specify the org ID in the orgID parameter in the URI.
 */
 func (s *OrganizationsService) GetOrganization(orgID string) (*Organization, *resty.Response, error) {
 
-	path := "/organizations/{orgId}"
-	path = strings.Replace(path, "{"+"orgId"+"}", fmt.Sprintf("%v", orgID), -1)
+	path := "/organizations/" + orgID
 
 	response, err := s.client.R().
 		SetResult(&Organization{}).

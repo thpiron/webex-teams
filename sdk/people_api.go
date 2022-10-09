@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -168,8 +166,7 @@ Specify the person ID in the personID parameter in the URI.
 */
 func (s *PeopleService) DeletePerson(personID string) (*resty.Response, error) {
 
-	path := "/people/{personId}"
-	path = strings.Replace(path, "{"+"personId"+"}", fmt.Sprintf("%v", personID), -1)
+	path := "/people/" + personID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -214,8 +211,7 @@ Specify the person ID in the personID parameter in the URI.
 */
 func (s *PeopleService) GetPerson(personID string) (*Person, *resty.Response, error) {
 
-	path := "/people/{personId}"
-	path = strings.Replace(path, "{"+"personId"+"}", fmt.Sprintf("%v", personID), -1)
+	path := "/people/" + personID
 
 	response, err := s.client.R().
 		SetResult(&Person{}).
@@ -298,8 +294,7 @@ Include all details for the person. This action expects all user details to be p
 */
 func (s *PeopleService) Update(personID string, personRequest *PersonRequest) (*Person, *resty.Response, error) {
 
-	path := "/people/{personId}"
-	path = strings.Replace(path, "{"+"personId"+"}", fmt.Sprintf("%v", personID), -1)
+	path := "/people/" + personID
 
 	response, err := s.client.R().
 		SetBody(personRequest).

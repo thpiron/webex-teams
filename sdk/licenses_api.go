@@ -1,9 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/go-resty/resty/v2"
 	"github.com/google/go-querystring/query"
 	"github.com/peterhellberg/link"
@@ -76,8 +73,7 @@ Specify the license ID in the licenseID parameter in the URI.
 */
 func (s *LicensesService) GetLicense(licenseID string) (*License, *resty.Response, error) {
 
-	path := "/licenses/{licenseId}"
-	path = strings.Replace(path, "{"+"licenseId"+"}", fmt.Sprintf("%v", licenseID), -1)
+	path := "/licenses/" + licenseID
 
 	response, err := s.client.R().
 		SetResult(&License{}).

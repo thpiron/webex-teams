@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -113,8 +111,7 @@ Specify the team ID in the teamID parameter in the URI.
 */
 func (s *TeamsService) DeleteTeam(teamID string) (*resty.Response, error) {
 
-	path := "/teams/{teamId}"
-	path = strings.Replace(path, "{"+"teamId"+"}", fmt.Sprintf("%v", teamID), -1)
+	path := "/teams/" + teamID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -137,8 +134,7 @@ Specify the team ID in the teamID parameter in the URI.
 */
 func (s *TeamsService) GetTeam(teamID string) (*Team, *resty.Response, error) {
 
-	path := "/teams/{teamId}"
-	path = strings.Replace(path, "{"+"teamId"+"}", fmt.Sprintf("%v", teamID), -1)
+	path := "/teams/" + teamID
 
 	response, err := s.client.R().
 		SetResult(&Team{}).
@@ -210,8 +206,7 @@ Specify the team ID in the teamID parameter in the URI.
 */
 func (s *TeamsService) UpdateTeam(teamID string, teamUpdateRequest *TeamUpdateRequest) (*Team, *resty.Response, error) {
 
-	path := "/teams/{teamId}"
-	path = strings.Replace(path, "{"+"teamId"+"}", fmt.Sprintf("%v", teamID), -1)
+	path := "/teams/" + teamID
 
 	response, err := s.client.R().
 		SetBody(teamUpdateRequest).

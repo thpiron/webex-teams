@@ -1,8 +1,6 @@
 package webexteams
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -133,8 +131,7 @@ Specify the device ID in the deviceID parameter in the URI.
 */
 func (s *DevicesService) DeleteDevice(deviceID string) (*resty.Response, error) {
 
-	path := "/devices/{deviceId}"
-	path = strings.Replace(path, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceID), -1)
+	path := "/devices/" + deviceID
 
 	response, err := s.client.R().
 		SetError(&Error{}).
@@ -155,8 +152,7 @@ func (s *DevicesService) DeleteDevice(deviceID string) (*resty.Response, error) 
 */
 func (s *DevicesService) GetDevice(deviceID string) (*Device, *resty.Response, error) {
 
-	path := "/devices/{deviceId}"
-	path = strings.Replace(path, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceID), -1)
+	path := "/devices/" + deviceID
 
 	response, err := s.client.R().
 		SetResult(&Device{}).
