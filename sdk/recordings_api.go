@@ -80,15 +80,8 @@ func (s *RecordingsService) recordingsPagination(linkHeader string, size, max in
 				return nil
 			}
 			items = response.Result().(*Recordings)
-			if size != 0 {
-				size = size + len(items.Items)
-				if size < max {
-					recordings := s.recordingsPagination(response.Header().Get("Link"), size, max)
-					for _, recording := range recordings.Items {
-						items.AddRecording(recording)
-					}
-				}
-			} else {
+			size = size + len(items.Items)
+			if max < 0 || size < max {
 				recordings := s.recordingsPagination(response.Header().Get("Link"), size, max)
 				for _, recording := range recordings.Items {
 					items.AddRecording(recording)
@@ -105,7 +98,7 @@ func (s *RecordingsService) recordingsPagination(linkHeader string, size, max in
 type ListRecordingsQueryParams struct {
 	From           string `url:"from,omitempty"`           // Starting date and time (inclusive) for recordings to return, in any ISO 8601 compliant format. from cannot be after current date and time or after to.
 	To             string `url:"To,omitempty"`             // Ending date and time (exclusive) for List recordings to return, in any ISO 8601 compliant format. to cannot be after current date and time or before from.
-	Max            int    `url:"max,omitempty"`            // Limit the maximum number of items in the response.
+	Max            int    `url:"max,omitempty"`            // Limit the maximum number of items in the response. Negative value will list all items (use this carefully).
 	MeetingId      string `url:"meetingId,omitempty"`      // Unique identifier for the parent meeting series, scheduled meeting, or meeting instance for which recordings are being requested.
 	HostEmail      string `url:"hostEmail,omitempty"`      // Email address for the meeting host.
 	SiteUrl        string `url:"siteUrl,omitempty"`        // URL of the Webex site which the API lists recordings from.
@@ -113,7 +106,7 @@ type ListRecordingsQueryParams struct {
 	Topic          string `url:"topic,omitempty"`          // Recording's topic.
 	Format         string `url:"format,omitempty"`         // Recoding's file format.
 	ServiceType    string `url:"serviceType,omitempty"`    // Recording's service-type.
-	Paginate       bool   // Indicates if pagination is needed
+	RequestBy      int    `url:"-"`                        // Number of items to retrieve by requests (Max if let at 0)
 }
 
 // ListRecordings List recordings.
@@ -123,7 +116,7 @@ The list returned is sorted in descending order by the date and time that the re
 Long result sets are split into pages.
  @param from (string) Starting date and time (inclusive) for recordings to return, in any ISO 8601 compliant format.
  @param to (string) Ending date and time (exclusive) for List recordings to return, in any ISO 8601 compliant format.
- @param max (int) limit the maximum number of items in the response.
+ @param max (int) Limit the maximum number of items in the response. Negative value will list all items (use this carefully).
  @param meetingId (string) Unique identifier for the parent meeting series, scheduled meeting, or meeting instance.
  @param hostEmail (string) Email address for the meeting host.
  @param siteUrl (string) URL of the Webex site which the API lists recordings from.
@@ -131,12 +124,20 @@ Long result sets are split into pages.
  @param topic (string) Recording's topic.
  @param format (string) Recoding's file format.
  @param serviceType (string) Recording's service-type.
- @param paginate (bool) indicates if pagination is needed
+ @param "requestBy" (int) Number of items by request
  @return Recordings
 */
 func (s *RecordingsService) ListRecordings(queryParams *ListRecordingsQueryParams) (*Recordings, *resty.Response, error) {
 
 	path := "/recordings/"
+
+	max := queryParams.Max
+
+	if queryParams.RequestBy > 0 {
+		queryParams.Max = queryParams.RequestBy
+	} else if queryParams.Max < 0 {
+		queryParams.Max = 0
+	}
 
 	queryParamsString, _ := query.Values(queryParams)
 
@@ -151,19 +152,14 @@ func (s *RecordingsService) ListRecordings(queryParams *ListRecordingsQueryParam
 	}
 
 	result := response.Result().(*Recordings)
-	if queryParams.Paginate {
-		items := s.recordingsPagination(response.Header().Get("Link"), 0, 0)
+
+	if max < 0 || len(result.Items) < max {
+		items := s.recordingsPagination(response.Header().Get("Link"), len(result.Items), max)
 		for _, recording := range items.Items {
 			result.AddRecording(recording)
 		}
-	} else {
-		if len(result.Items) < queryParams.Max {
-			items := s.recordingsPagination(response.Header().Get("Link"), len(result.Items), queryParams.Max)
-			for _, recording := range items.Items {
-				result.AddRecording(recording)
-			}
-		}
 	}
+
 	return result, response, err
 
 }
