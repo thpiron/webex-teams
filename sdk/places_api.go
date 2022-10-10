@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxPlacesByRequest = 1000
+
 // PlacesService is the service to communicate with the Places API endpoint
 type PlacesService service
 
@@ -181,6 +183,8 @@ func (s *PlacesService) ListPlaces(queryParams *ListPlacesQueryParams) (*Places,
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxPlacesByRequest {
+		queryParams.Max = MaxPlacesByRequest
 	}
 
 	queryParamsString, _ := query.Values(queryParams)

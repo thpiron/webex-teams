@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxRecordsByRequests = 100
+
 // RecordingsService is the service to communicate with the Recordings API endpoint
 type RecordingsService service
 
@@ -137,6 +139,8 @@ func (s *RecordingsService) ListRecordings(queryParams *ListRecordingsQueryParam
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxRecordsByRequests {
+		queryParams.Max = MaxRecordsByRequests
 	}
 
 	queryParamsString, _ := query.Values(queryParams)

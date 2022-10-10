@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxMembershipsByRequest = 1000
+
 // MembershipsService is the service to communicate with the Memberships API endpoint
 type MembershipsService service
 
@@ -185,6 +187,8 @@ func (s *MembershipsService) ListMemberships(queryParams *ListMembershipsQueryPa
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxMembershipsByRequest {
+		queryParams.Max = MaxMembershipsByRequest
 	}
 
 	queryParamsString, _ := query.Values(queryParams)

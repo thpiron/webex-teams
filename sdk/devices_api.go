@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxDevicesByRequest = 1000
+
 // DevicesService is the service to communicate with the Devices API endpoint
 type DevicesService service
 
@@ -211,6 +213,8 @@ func (s *DevicesService) ListDevices(queryParams *ListDevicesQueryParams) (*Devi
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxDevicesByRequest {
+		queryParams.Max = MaxDevicesByRequest
 	}
 
 	queryParamsString, _ := query.Values(queryParams)

@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxMeetingsByRequest = 100
+
 // MeetingsService is the service to communicate with the Meetings API endpoint
 type MeetingsService service
 
@@ -217,6 +219,8 @@ func (s *MeetingsService) ListMeetings(queryParams *ListMeetingsQueryParams) (*M
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxMeetingsByRequest {
+		queryParams.Max = MaxMeetingsByRequest
 	}
 
 	queryParamsString, _ := query.Values(queryParams)

@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxTeamsByRequest = 1000
+
 // TeamsService is the service to communicate with the Teams API endpoint
 type TeamsService service
 
@@ -164,6 +166,8 @@ func (s *TeamsService) ListTeams(queryParams *ListTeamsQueryParams) (*Teams, *re
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxTeamsByRequest {
+		queryParams.Max = MaxTeamsByRequest
 	}
 
 	queryParamsString, _ := query.Values(queryParams)

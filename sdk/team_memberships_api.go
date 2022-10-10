@@ -8,6 +8,8 @@ import (
 	"github.com/peterhellberg/link"
 )
 
+const MaxTeamMembershipsByRequest = 1000
+
 // TeamMembershipsService is the service to communicate with the TeamMemberships API endpoint
 type TeamMembershipsService service
 
@@ -173,6 +175,8 @@ func (s *TeamMembershipsService) ListTeamMemberhips(queryParams *ListTeamMemberh
 		queryParams.Max = queryParams.RequestBy
 	} else if queryParams.Max < 0 {
 		queryParams.Max = 0
+	} else if max > MaxTeamMembershipsByRequest {
+		queryParams.Max = MaxTeamMembershipsByRequest
 	}
 
 	queryParamsString, _ := query.Values(queryParams)
