@@ -1,6 +1,6 @@
-module github.com/jbogarin/go-cisco-webex-teams
+module github.com/thpiron/webex-teams
 
-go 1.14
+go 1.17
 
 require (
 	github.com/go-resty/resty/v2 v2.7.0

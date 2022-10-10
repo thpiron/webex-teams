@@ -1,24 +1,20 @@
-# go-cisco-webex-teams
+# webex-teams
 
-go-cisco-webex-teams is a Go client library for the [Cisco Webex Teams API](https://developer.webex.com/index.html).
+webex-teams is a Go client library for the [Cisco Webex Teams API](https://developer.webex.com/index.html).
 
 ## Usage
 
 ```go
-import webexteams "github.com/jbogarin/go-cisco-webex-teams/sdk"
+import webexteams "github.com/thpiron/webex-teams/sdk"
 ```
 
 ## Documentation
 
-Documentation for the library can be found [here](https://godoc.org/github.com/jbogarin/go-cisco-webex-teams/sdk)
+Documentation for the library can be found [here](https://godoc.org/github.com/thpiron/webex-teams/sdk)
 
 ## Changes
 
-- 2019-08-12: **Tag v0.2.0**: _Breaking change_, moved from resty v1 to resty v2. Include paginate option in List query params
-- 2019-09-10: **Tag v0.3.0**: _Breaking change_, removed complexity from client, resty is a dependency for the library but it is not longer necessary to import it in the code using the SDK.
-- 2020-10-14: **Tag v0.4.0**: _Breaking change_, added Go modules functionality
-- 2021-02-23: **Tag v0.4.1**: Included events and admin audit events functionality
-- 2022-08-01: **Tag v0.4.3**: Included attachment actions and membership changes
+- 2022-10-10: **Tag v0.1.0**: forked from jbogarin/go-cisco-webex-teams, added auto retry on 429, fixed pagination (RequestBy), updating schemas
 
 ## Authorization Token
 
