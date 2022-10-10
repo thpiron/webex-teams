@@ -1,7 +1,12 @@
 package webexteams
 
 import (
+	"errors"
+	"fmt"
+	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/go-resty/resty/v2"
 )
@@ -35,12 +40,44 @@ type Client struct {
 }
 
 type service struct {
-	client *resty.Client
+	client                 *resty.Client
+	retryOnTooManyRequests bool
 }
 
 // SetAuthToken defines the Authorization token sent in the request
 func (s *Client) SetAuthToken(accessToken string) {
 	s.common.client.SetAuthToken(accessToken)
+}
+
+func (s *Client) AddRetryOnTooManyRequestsStatus() {
+	if s.common.retryOnTooManyRequests {
+		return
+	}
+	s.common.client.SetRetryCount(3)
+	s.common.client.SetRetryAfter(
+		func(c *resty.Client, r *resty.Response) (time.Duration, error) {
+			// Retrying but not on a 429, we retry immediately
+			if r.StatusCode() != http.StatusTooManyRequests {
+				return time.Duration(0), nil
+			}
+			retryAfterRaw := r.Header().Get("Retry-After")
+			if retryAfterRaw == "" {
+				return 0, errors.New("received a 429, but got an empty Retry-After header")
+			}
+			retryAfter, err := strconv.Atoi(retryAfterRaw)
+			if err != nil {
+				return 0, fmt.Errorf("invalid Retry-After header: %v", retryAfterRaw)
+			}
+			fmt.Println(time.Second * time.Duration(retryAfter))
+			return time.Second * time.Duration(retryAfter), nil
+		},
+	)
+	s.common.client.AddRetryCondition(
+		func(r *resty.Response, err error) bool {
+			return r.StatusCode() == http.StatusTooManyRequests
+		},
+	)
+	s.common.retryOnTooManyRequests = true
 }
 
 // NewClient creates a new API client. Requires a userAgent string describing your application.
