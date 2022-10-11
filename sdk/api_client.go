@@ -86,7 +86,7 @@ func NewClient() *Client {
 	client := resty.New()
 	c := &Client{}
 	c.common.client = client
-	c.common.client.SetHostURL(apiURL)
+	c.common.client.SetBaseURL(apiURL)
 	if os.Getenv("WEBEX_TEAMS_ACCESS_TOKEN") != "" {
 		c.common.client.SetAuthToken(os.Getenv("WEBEX_TEAMS_ACCESS_TOKEN"))
 	}
